@@ -6,6 +6,7 @@
     import preloader from "@/app/utils/preloader";
     import ApiLoader from "foo/net/ApiLoader";
     import PreloaderTransition from "@/app/transitions/PreloaderTransition";
+    import FontFanceObserver from "fontfaceobserver";
 
     export default {
         name: "Preloader",
@@ -59,7 +60,11 @@
                 return new Promise((resolve) => {
                     this.loader = preloader;
                     this.loader.on("progress", this.onProgress);
-                    this.loader.on('complete', () => this.onComplete(resolve));
+                    this.loader.on('complete', async () => {
+                        const canelaFont = new FontFanceObserver("Canela");
+                        await canelaFont.load();
+                        this.onComplete(resolve);
+                    });
                     this.load();
                 });
             },
